@@ -1,4 +1,6 @@
 ﻿
+using TaskTracker.Models;
+
 DisplayWelcomeMessage();
 List<string> commands = [];
 while (true)
@@ -11,6 +13,9 @@ while (true)
 	commands = input.Split(' ').ToList();
 
 	var exit = false;
+	var b = new UserTask();
+	b.Status = 0;
+	Console.WriteLine(b.Status);
 
 	switch (commands[0].ToLower())
 	{
