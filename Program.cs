@@ -1,5 +1,5 @@
-﻿
-using TaskTracker.Models;
+﻿using TaskTracker.Helper;
+using TaskTracker.Services;
 
 DisplayWelcomeMessage();
 List<string> commands = [];
@@ -10,18 +10,16 @@ while (true)
 
 	if(string.IsNullOrEmpty(input)) { continue; }
 
-	commands = input.Split(' ').ToList();
+	commands = Utility.ParseInput(input);
 
 	var exit = false;
-	var b = new UserTask();
-	b.Status = 0;
-	Console.WriteLine(b.Status);
 
 	switch (commands[0].ToLower())
 	{
 		case "help":
 			break;
 		case "add":
+			TaskService.AddAction(commands);
 			break;
 		case "update":
 			break;
