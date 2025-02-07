@@ -17,6 +17,7 @@ while (true)
 	switch (commands[0].ToLower())
 	{
 		case "help":
+			TaskService.HelpAction(commands);
 			break;
 		case "add":
 			TaskService.AddAction(commands);
@@ -32,6 +33,8 @@ while (true)
 		case "list":
 			break;
 		case "clear":
+			Console.Clear();
+			DisplayWelcomeMessage();
 			break;
 		case "exit":
 			exit = true;

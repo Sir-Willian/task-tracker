@@ -11,6 +11,19 @@ static class TaskService
 	public static void HelpAction(List<string> parameters)
 	{
 		if (parameters.Count > 1) { Console.WriteLine("Invalid input for 'help' command!"); return; }
+
+		Console.WriteLine("These are the available commands:" + "\n" + "\n" +
+			"Commands to help you:" + "\n" +
+			"   help                               -To display all of commands" + "\n" +
+			"   clear                              -To clear the display" + "\n" +
+			"   exit                               -To close the task tracker" + "\n" + "\n" +
+			"Commands to manipulate tasks:" + "\n" +
+			"   add <description>                  -To add a task with a specific descrition" + "\n" +
+			"   update <id> <description>          -To update a task with specific id" + "\n" +
+			"   delete <id>                        -To delete a task with specific id" + "\n" +
+			"   mark-in-progress <id>              -To mark in progress a task with specific id" + "\n" +
+			"   mark-done <id>                     -To mark as done a task with specific id" + "\n" +
+			"   list [todo | in-progress | done]   -To list all of tasks (if you specify one of three status, only tasks with the specified status will be listed)" + "\n");
 	}
 
 	public static void AddAction(List<string> parameters)
