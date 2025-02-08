@@ -64,6 +64,30 @@ static class TaskService
 		return 1;
 	}
 
+	public static void UpdateAction(List<string> parameters)
+	{
+		if(parameters.Count != 3) { Console.WriteLine("Invalid input for 'update' command!"); return; }
+
+		int taskId = int.TryParse(parameters[1], out int result) ? result : -1;
+		if(taskId == -1) { Console.WriteLine("Invalid input for <id>!"); return; }
+
+		var taskList = GetTasksFromJson();
+		int taskIdx = taskList.FindIndex(t => t.Id == taskId);
+		var task = taskIdx != -1 ? taskList[taskIdx] : null;
+
+		if(task == null) { Console.WriteLine($"This task with id {taskId} doen't exist!"); return; }
+
+		task.Description = parameters[2];
+		task.UpdatedAt = DateTime.UtcNow;
+
+		taskList[taskIdx] = task;
+
+		var updatedTaskList = JsonSerializer.Serialize<List<UserTask>>(taskList);
+		File.WriteAllText(filePath, updatedTaskList);
+
+		Console.WriteLine("Task updated successfully.");
+	}
+
 	private static List<UserTask> GetTasksFromJson()
 	{
 		var taskFromJsonFile = File.ReadAllText(filePath);

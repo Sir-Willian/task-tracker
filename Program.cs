@@ -23,6 +23,7 @@ while (true)
 			TaskService.AddAction(commands);
 			break;
 		case "update":
+			TaskService.UpdateAction(commands);
 			break;
 		case "delete":
 			break;
