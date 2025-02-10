@@ -72,15 +72,15 @@ static class TaskService
 		if(taskId == -1) { Console.WriteLine("Invalid input for <id>!"); return; }
 
 		var taskList = GetTasksFromJson();
-		int taskIdx = taskList.FindIndex(t => t.Id == taskId);
-		var task = taskIdx != -1 ? taskList[taskIdx] : null;
+		int taskIndex = taskList.FindIndex(t => t.Id == taskId);
+		var task = taskIndex != -1 ? taskList[taskIndex] : null;
 
 		if(task == null) { Console.WriteLine($"This task with id {taskId} doen't exist!"); return; }
 
 		task.Description = parameters[2];
 		task.UpdatedAt = DateTime.UtcNow;
 
-		taskList[taskIdx] = task;
+		taskList[taskIndex] = task;
 
 		var updatedTaskList = JsonSerializer.Serialize<List<UserTask>>(taskList);
 		File.WriteAllText(filePath, updatedTaskList);
@@ -106,6 +106,29 @@ static class TaskService
 		File.WriteAllText(filePath, updatedTaskList);
 
 		Console.WriteLine("Task deleted successfully.");
+	}
+
+	public static void MarkInProgressOrDone(List<string> parameters)
+	{
+		if(parameters.Count != 2) { Console.WriteLine($"Invalid input for '{parameters[0]}' command!"); return; }
+
+		int taskId = int.TryParse(parameters[1], out int result) ? result : -1;
+		if (taskId == -1) { Console.WriteLine("Invalid input for <id>!"); return; }
+
+		var taskList = GetTasksFromJson();
+		int taskIndex = taskList.FindIndex(t => t.Id == taskId);
+		var task = taskIndex != -1 ? taskList[taskIndex] : null;
+
+		if (task == null) { Console.WriteLine($"This task with id {taskId} doen't exist!"); return; }
+
+		task.Status = parameters[0] == "mark-in-progress" ? Enums.UserTaskStatus.InProgress : Enums.UserTaskStatus.Done;
+
+		taskList[taskIndex] = task;
+
+		var updatedTaskList = JsonSerializer.Serialize<List<UserTask>>(taskList);
+		File.WriteAllText(filePath, updatedTaskList);
+
+		Console.WriteLine("Task updated successfully.");
 	}
 
 	private static List<UserTask> GetTasksFromJson()

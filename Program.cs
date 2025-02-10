@@ -28,9 +28,8 @@ while (true)
 		case "delete":
 			TaskService.DeleteAction(commands);
 			break;
-		case "mark-in-progress":
-			break;
-		case "mark-done":
+		case "mark-in-progress" or "mark-done":
+			TaskService.MarkInProgressOrDone(commands);
 			break;
 		case "list":
 			break;
