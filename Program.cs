@@ -26,6 +26,7 @@ while (true)
 			TaskService.UpdateAction(commands);
 			break;
 		case "delete":
+			TaskService.DeleteAction(commands);
 			break;
 		case "mark-in-progress":
 			break;

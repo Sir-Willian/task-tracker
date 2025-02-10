@@ -88,6 +88,26 @@ static class TaskService
 		Console.WriteLine("Task updated successfully.");
 	}
 
+	public static void DeleteAction(List<string> parameters)
+	{
+		if (parameters.Count != 2) { Console.WriteLine("Invalid input for 'delete' command!"); return; }
+
+		int taskId = int.TryParse(parameters[1], out int result) ? result : -1;
+		if (taskId == -1) { Console.WriteLine("Invalid input for <id>!"); return; }
+
+		var taskList = GetTasksFromJson();
+		int taskIndex = taskList.FindIndex(t => t.Id == taskId);
+		
+		if(taskIndex == -1) { Console.WriteLine($"This task with id {taskId} doen't exist!"); return; }
+		
+		taskList.RemoveAt(taskIndex);
+
+		var updatedTaskList = JsonSerializer.Serialize<List<UserTask>>(taskList);
+		File.WriteAllText(filePath, updatedTaskList);
+
+		Console.WriteLine("Task deleted successfully.");
+	}
+
 	private static List<UserTask> GetTasksFromJson()
 	{
 		var taskFromJsonFile = File.ReadAllText(filePath);
