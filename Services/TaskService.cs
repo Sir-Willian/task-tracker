@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json;
 using TaskTracker.Models;
 
 namespace TaskTracker.Services;
@@ -129,6 +130,48 @@ static class TaskService
 		File.WriteAllText(filePath, updatedTaskList);
 
 		Console.WriteLine("Task updated successfully.");
+	}
+
+	public static void ListTasks(List<string> parameters)
+	{
+		/* listBy field values
+		 * -1 = invalid parameter
+		 * 0 = todo
+		 * 1 = in-progress
+		 * 2 = done
+		 * 4 = all
+		 */
+		int listBy = parameters.Count == 1 ? 4 : ValidListningStatus(parameters[1]);
+		if (parameters.Count >= 3 || listBy == -1) { Console.WriteLine("Invalid input for 'list' command!"); return; }
+
+		var taskList = GetTasksFromJson();
+
+		Console.WriteLine("{0,-" + 15 + "} {1,-" + 35 + "} {2,-" + 15 + "} {3,-" + 20 + "} {4,-" + 20 + "}",
+			"Task Id", "Description", "Status", "Create Date", "Last Update");
+
+		foreach(var task in taskList)
+		{
+			if (listBy == 4 || (int)task.Status == listBy)
+			{
+				Console.WriteLine("{0,-" + 15 + "} {1,-" + 35 + "} {2,-" + 15 + "} {3,-" + 20 + "} {4,-" + 20 + "}",
+					task.Id, task.Description, task.Status, task.CreatedAt.Date.ToString("dd-MM-yyyy"), task.UpdatedAt.Date.ToString("dd-MM-yyyy"));
+			}
+		}
+	}
+
+	private static int ValidListningStatus(string status)
+	{
+		switch (status)
+		{
+			case "todo":
+				return (int)Enums.UserTaskStatus.Todo;
+			case "in-progress":
+				return (int)Enums.UserTaskStatus.InProgress;
+			case "done":
+				return (int)Enums.UserTaskStatus.Done;
+			default:
+				return -1;
+		}
 	}
 
 	private static List<UserTask> GetTasksFromJson()

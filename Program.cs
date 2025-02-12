@@ -32,6 +32,7 @@ while (true)
 			TaskService.MarkInProgressOrDone(commands);
 			break;
 		case "list":
+			TaskService.ListTasks(commands);
 			break;
 		case "clear":
 			Console.Clear();
