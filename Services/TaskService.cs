@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using TaskTracker.Models;
 
 namespace TaskTracker.Services;
@@ -40,11 +39,6 @@ static class TaskService
 			CreatedAt = DateTime.UtcNow,
 			UpdatedAt = DateTime.UtcNow
 		};
-
-		if (!File.Exists(filePath))
-		{
-			using(FileStream fs = File.Create(filePath)) { Console.WriteLine($"The file {fileName} was created."); }
-		}
 
 		taskList = GetTasksFromJson();
 		taskList.Add(task);
@@ -178,6 +172,11 @@ static class TaskService
 
 	private static List<UserTask> GetTasksFromJson()
 	{
+		if (!File.Exists(filePath))
+		{
+			using (FileStream fs = File.Create(filePath)) { }
+		}
+
 		var taskFromJsonFile = File.ReadAllText(filePath);
 		if (string.IsNullOrEmpty(taskFromJsonFile)) { return []; }
 
