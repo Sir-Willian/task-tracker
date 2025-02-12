@@ -42,7 +42,7 @@ while (true)
 			exit = true;
 			break;
 		default:
-			Console.WriteLine("Invalid input! Try again.");
+			Console.WriteLine("Invalid input! Try again.\n");
 			break;
 	}
 
